@@ -13,7 +13,7 @@ export default function LoadingScreen(props: LoadingScreenProps) {
         justifyContent: 'center',
         alignItems: 'center',
     },
-        logo: {
+    logo: {
         width: props.imgSize,  // Adjust based on your logo size
         height: props.imgSize, // Adjust based on your logo size
         resizeMode: 'contain',

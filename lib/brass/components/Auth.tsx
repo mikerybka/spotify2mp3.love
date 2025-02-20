@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import LoadingScreen, { LoadingScreenProps } from "./LoadingScreen";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import LoginScreen from "./LoginScreen";
-
+import LoginScreen, { LoginScreenProps } from "./LoginScreen";
+import SessionContext from "../contexts/SessionContext";
 
 export interface AuthProps {
-    loadingScreen: LoadingScreenProps;
+    loadingScreenProps: LoadingScreenProps;
     children?: any;
 }
 
@@ -15,21 +15,22 @@ export default function Auth(props: AuthProps) {
 
     useEffect(() => {
         AsyncStorage.getItem("sessionID").then((id: string | null) => {
+            setLoading(false)
             if (id !== null) {
                 setSessionID(id)
             }
-        })
+        });
     }, []);
 
     if (loading) {
-        return <LoadingScreen {...props.loadingScreen}  />;
+        return <LoadingScreen {...props.loadingScreenProps}  />;
     }
 
     if (!sessionID) {
         return <LoginScreen onSuccess={setSessionID} />;
     }
 
-    return <>
+    return <SessionContext.Provider value={sessionID}>
         {props.children}
-    </>
+    </SessionContext.Provider>
 }
